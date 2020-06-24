@@ -1,0 +1,11 @@
+﻿上传到远程仓库的步骤
+1、git init //初始化
+2、git add .  将当前文件所有文件上传  git add a.txt 只上传a文件  //添加到暂缓区
+3、git commit -m "提交的注释"  //提交到本地仓库
+4、git remote add origin https://github.com/slee123456/4job.git //连接远程仓库
+5、git pull origin master //merge远程和本地修改  （不想merge的话，可以创建新的分支 git branch [name] 然后 git push -u origin [name]） 不融合的话可能会报错Updates were rejected because the tip of your current branch is behind
+6、git push -u origin master //上传到远程仓库的master分支
+
+其他的一些命令：
+1、强制上传 git push -u origin master -f  （一般不用，这样会使远程修改丢失，一般是不可取的，尤其是多人协作开发的时候）
+ 
