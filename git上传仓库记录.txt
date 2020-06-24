@@ -8,4 +8,11 @@
 
 其他的一些命令：
 1、强制上传 git push -u origin master -f  （一般不用，这样会使远程修改丢失，一般是不可取的，尤其是多人协作开发的时候）
+2、查看当前状态 git status
+3、查看历史记录 git log
+4、查看对某个文件修改了哪些内容 git diff a.txt
+5、获取版本号 git reflog
+6、退回上一版本git reset --hard HEAD^  退回到上x版本 git reset --hard HEAD^x  还可以通过 git reset --hard 版本号  来退回到该版本  
+
+
  
