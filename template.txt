@@ -42,5 +42,59 @@ for (int i = 1, j = 0; i <= n; i ++ )
         // 匹配成功后的逻辑
     }
 }
+//哈希函数的设计（开放寻址法）
+class MyHashMap {
+public:
+    /** Initialize your data structure here. */
+    int N = 10000;
+    vector<list<pair<int, int>>> hs;
+    MyHashMap() {
+        hs =  vector<list<pair<int, int>>>(N);
+    }
+    
+    list<pair<int, int>>::iterator find(int key)
+    {
+        int t = key % N;
+        for(auto it = hs[t].begin(); it != hs[t].end(); it++)
+        {
+            if(key==it->first) return it;
+        }
+        return hs[t].end();
+    }
+        
+    /** value will always be non-negative. */
+    void put(int key, int value) {
+        auto c = find(key);
+        int t = key % N;
+        if(c == hs[t].end()) hs[t].push_back({key,value});
+        else c->second = value;
+    }
+    
+    /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+    int get(int key) {
+        auto c = find(key);
+        int t = key % N;
+        if(c == hs[t].end()) return -1;
+        else return c->second;
+    }
+    
+    /** Removes the mapping of the specified value key if this map contains a mapping for the key */
+    void remove(int key) {
+        auto c = find(key);
+        int t = key % N;
+        if(c != hs[t].end()) hs[t].erase(c);
+    }
+};
+MyHashMap hashMap;
+hashMap.put(1, 1);
+hashMap.put(2, 2);
+int a = hashMap.get(1); 
+int b = hashMap.get(3); 
+int c = hashMap.get(2);
+hashMap.put(2, 1);
+int d = hashMap.get(2);
+hashMap.remove(2);
+int e = hashMap.get(2);
+
 
 
