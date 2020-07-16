@@ -1,0 +1,164 @@
+1、二叉树的深度
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int dfs(TreeNode* root)
+    {
+        if(!root) return 0;
+        int left = dfs(root->left);
+        int right = dfs(root->right);
+        return 1+max(left,right);
+    } 
+    int maxDepth(TreeNode* root) {
+        return dfs(root);
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////
+2、树的中序遍历
+class Solution {
+public:
+    //递归方法
+    /*vector<int> res;
+    vector<int> inorderTraversal(TreeNode* root) {  
+        if(!root) return res;
+        dfs(root);
+        return res;
+    }
+    void dfs(TreeNode* root)
+    {
+        if(!root) return; 
+        dfs(root->left);
+        res.push_back(root->val);
+        dfs(root->right);
+    }*/
+    //迭代方法
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode*> stk;
+        auto p = root;
+        while(p || stk.size())
+        {
+            while(p)
+            {
+                stk.push(p);
+                p = p->left;
+            }
+            p = stk.top();
+            stk.pop();
+            res.push_back(p->val);
+            p = p->right;
+        }
+        return res;
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////
+3、判断平衡二叉树（每个节点的左右子树高度不大于1）
+class Solution {
+public:
+    int height(TreeNode* root)
+    {
+        if(!root) return 0;
+        int left = height(root->left);
+        int right = height(root->right);
+        return 1 + max(left,right);
+    }
+    bool isBalanced(TreeNode* root) {
+        if(!root) return true;
+        if(abs(height(root->left)-height(root->right))>1)
+        {
+            return false;
+        }
+        return isBalanced(root->left)&&isBalanced(root->right);
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////
+4、二叉树翻转（镜像）
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(!root) return root;
+        auto temp = root->right;
+        root->right = root->left;
+        root->left = temp;
+        invertTree(root->right);
+        invertTree(root->left);
+        return root;
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////
+5、对称二叉树
+class Solution {
+public:
+    bool helper(TreeNode* root1, TreeNode* root2)
+    {
+        if(!root1 && !root2) return true;
+        if(!root1 || !root2) return false;
+        return (root1->val==root2->val)&&helper(root1->left,root2->right)&&helper(root1->right,root2->left);
+    }
+    bool isSymmetric(TreeNode* root) {
+        if(!root) return true;
+        return helper(root->left,root->right);
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////
+6、前序+中序构建二叉树
+class Solution {
+public:
+    TreeNode* reconstruct(vector<int>::iterator pbegin, vector<int>::iterator pend, vector<int>::iterator ibegin, vector<int>::iterator iend)
+    {
+        if(pbegin==pend) return NULL;
+        TreeNode* cur = new TreeNode(*pbegin);
+        auto root = find(ibegin,iend,*pbegin);
+        cur->left = reconstruct(pbegin+1,pbegin+1+(root-ibegin),ibegin,root);
+        cur->right = reconstruct(pbegin+1+(root-ibegin),pend,root+1,iend);
+        return cur;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        return reconstruct(preorder.begin(),preorder.end(),inorder.begin(),inorder.end());
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////
+7、二叉树的坡度
+class Solution {
+public:
+    int helper(TreeNode* root, int &tilt)    //计算每个节点加上左右子节点的值，以及该节点得坡度（左子树结点和和右子树结点和的差的绝对值）
+    {
+        if(!root) return 0;
+        int left = helper(root->left, tilt);
+        int right = helper(root->right, tilt);
+        tilt += abs(left-right);
+        return root->val + left + right;
+    }
+    int findTilt(TreeNode* root) { 
+        int tilt = 0;
+        helper(root,tilt);
+        return tilt;
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////
+8、 二叉树的直径
+class Solution {
+public:
+    int ans = 0;
+    int height(TreeNode* root)
+    {
+        if(!root) return 0;
+        int left =  height(root->left);
+        int right = height(root->right);
+        ans = max(ans, 1 + left + right);  //在求每个节点的深度时，顺便比较路径的长度
+        return 1 + max(left, right); 
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(!root) return 0;
+        height(root);
+        return ans-1; //减1是因为如4个节点之间的连线（直径）是3,5个结点之间的连线时4
+    }
+};
