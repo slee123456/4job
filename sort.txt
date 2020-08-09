@@ -1,0 +1,94 @@
+1、快排  
+平均：O(nlogn)
+最好：O(nlogn)
+最坏：O(n2)
+空间复杂度：O(nogn)~ O(n)
+void quickSort(int l, int r, vector<int> &vec)
+{
+	if (l >= r) return;	//递归边界条件
+	int i, j, base,temp;
+	i = l, j = r;
+	base = vec[l];
+	while (i < j)
+	{
+		while (vec[j] <= base && i < j)
+		{
+			j--;
+		}
+		while (vec[i] >= base && i < j)
+		{
+			i++;
+		}
+		if (i < j)
+		{
+			temp = vec[i];
+			vec[i] = vec[j];
+			vec[j] = temp;
+		}
+	}
+	vec[l] = vec[i];
+	vec[i] = base;
+	quickSort(l, i - 1, vec);
+	quickSort(i + 1, r, vec);
+}
+2、堆排序
+平均：O(nlogn)
+最好：O(nlogn)
+最坏：O(nlogn)
+空间复杂度：O(1)
+void adjust(vector<int>&vec, int size, int index)
+{
+	int left = 2 * index + 1;
+	int right = 2 * index + 2;
+	int maxID = index;
+	if (left < size && vec[left] > vec[maxID]) maxID = left;
+	if (right < size && vec[right] > vec[maxID]) maxID = right;
+	if (maxID != index)//说明交换过了
+	{
+		swap(vec[index], vec[maxID]);
+		adjust(vec, size, maxID);
+	}
+}
+void heapSort(vector<int>&vec)
+{
+	//从倒数第一个非叶子结点开始,通过不断地adjust来构造大根堆
+	int n = vec.size();
+	for (int i = n / 2 - 1; i >= 0; i--)
+	{
+		adjust(vec, n, i);
+	}
+
+	for (int i = n - 1; i >= 1; i--)
+	{
+		swap(vec[0], vec[i]);
+		adjust(vec, i, 0);//从0开始主要是因为之前已经是大根堆了，交换首尾元素之后根节点可能不满足条件了，所以从0开始
+	}
+}
+3、冒泡排序
+平均：O(n2)
+最好：O(n)
+最坏：O(n2)
+空间复杂度：O(1)
+void bubbleSort(vector<int>&vec)
+{
+	int n = vec.size();
+	for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n - 1 - i; j++)//已经排好序的不必再进行比较
+		{
+			if (vec[j]>vec[j + 1])
+			{
+				//int temp = vec[j];
+				//vec[j] = vec[j + 1];
+				//vec[j + 1] = temp;
+				swap(vec[j],vec[j+1]);
+			}
+		}
+	}
+}
+4、归并排序
+平均：O(nlogn)
+最好：O(nlogn)
+最坏：O(nlogn)
+空间复杂度：O(n)
+
