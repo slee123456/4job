@@ -6,7 +6,7 @@
 void quickSort(int l, int r, vector<int> &vec)
 {
 	if (l >= r) return;	//递归边界条件
-	int i, j, base,temp;
+	int i, j, base;
 	i = l, j = r;
 	base = vec[l];
 	while (i < j)
@@ -21,13 +21,10 @@ void quickSort(int l, int r, vector<int> &vec)
 		}
 		if (i < j)
 		{
-			temp = vec[i];
-			vec[i] = vec[j];
-			vec[j] = temp;
+                                                swap(vec[i],vec[j]);
 		}
 	}
-	vec[l] = vec[i];
-	vec[i] = base;
+                swap(vec[l],vec[i]);
 	quickSort(l, i - 1, vec);
 	quickSort(i + 1, r, vec);
 }
