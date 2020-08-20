@@ -46,7 +46,7 @@ void adjust(vector<int>&vec, int size, int index)
 	if (maxID != index)//说明交换过了
 	{
 		swap(vec[index], vec[maxID]);
-		adjust(vec, size, maxID);
+		adjust(vec, size, maxID);  //要用递归，因为首位元素交换后，要从头元素开始调整，因此用到了递归
 	}
 }
 void heapSort(vector<int>&vec)
@@ -91,4 +91,47 @@ void bubbleSort(vector<int>&vec)
 最好：O(nlogn)
 最坏：O(nlogn)
 空间复杂度：O(n)
-
+void merge(int* array, int start, int mid, int end)   //合并
+{
+	int* temp = new int[end - start + 1];
+	int first = start, second = mid + 1,tempIndex = 0;
+	while (first <= mid && second <= end)
+	{
+		if (array[first] <= array[second])
+		{
+			temp[tempIndex] = array[first];
+			tempIndex++;
+			first++;
+		}
+		else{
+			temp[tempIndex] = array[second];
+			tempIndex++;
+			second++;
+		}
+	}
+	while (first <= mid)
+	{
+		temp[tempIndex] = array[first];
+		tempIndex++;
+		first++;
+	}
+	while (second <= end)
+	{
+		temp[tempIndex] = array[second];
+		tempIndex++;
+		second++;
+	}
+	for (int i = 0; i < end - start + 1; i++)
+	{
+		array[start + i] = temp[i];
+	}
+	delete[] temp;
+}
+void mergeSort(int* array, int start, int end)
+{
+	if (array==NULL || start >= end) return;
+	int mid = (start + end) / 2;
+	mergeSort(array, start, mid);        //递归分解
+	mergeSort(array, mid + 1, end);
+	merge(array, start, mid, end);
+}
