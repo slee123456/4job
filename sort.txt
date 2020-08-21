@@ -2,7 +2,7 @@
 平均：O(nlogn)
 最好：O(nlogn)
 最坏：O(n2)
-空间复杂度：O(nogn)~ O(n)
+空间复杂度：O(logn)~ O(n)
 void quickSort(vector<int> &vec, int l, int r)
 {
 	if (l >= r) return;	//递归边界条件
